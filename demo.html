@@ -1,0 +1,95 @@
+<html>
+<head>
+	<title>IP Validate</title>
+	<style type="text/css">
+		.true, .grean{
+		    color : green;
+		}
+		.false, .accuracy, .red{
+		    color: red;
+		}
+		.header{
+		    background-color: burlyWood;
+		}
+		.important{
+		    font-weight: bold;
+		}
+		.grean, .red, .accuracy{
+		    background-color: yellow;
+		}
+	</style>
+	<script type="text/javascript" src="string.ipvalidate.js"></script>
+	<script type="text/javascript" src="testdata.js"></script>
+	<script type="text/javascript">
+		var tp = 0;
+		var tn = 0;
+		var fp = 0;
+		var fn = 0;
+		for(var i in values ){
+		    var test = expression.test( values[i][1] );
+		   $("#testregx").append(
+		       "<tr>"+
+		           "<th>"+ values[i][1] +"</th>"+
+		           "<th class=\""+values[i][0]+"\">"+
+		               (values[i][0]?"GOOD":"BAD")+
+		           "</th>"+
+		           "<th class=\""+test+"\">"+
+		               (test?"PASS":"FAILL")+
+		           "</th>"+
+		       "</tr>"
+		    );
+		    
+		    if(values[i][0]){
+		        if(test){
+		            tp++;
+		        }else{
+		            fp++;
+		        }
+		    }else{
+		        if(test){
+		            fn++;
+		        }else{
+		            tn++;
+		        }
+
+		    }
+		}
+		accuracy = (tp + tn) / (tp + tn + fp + fn);
+		precision = tp / (tp + fp);
+		sensitivity = tp/(tp+fn);
+		specificity = tn/(tn+fp);
+
+		$("#testregx").before(
+		    "<tr>"+
+		        "<td collspan=\"3\" class=\"important\">"+
+		            "MISSMATCH:<span class=\"red\">"+ (fp+fn) +"</span>/"+values.length+
+		        "</td>"+
+		    "</tr>"+
+		    "<tr>"+
+		        "<td collspan=\"3\" class=\"important\">"+
+		            "MATCH:<span class=\"grean\">"+ (tp+tn) +"</span>/"+values.length+
+		        "</td>"+
+		    "</tr>"+
+		    "<tr>"+
+		        "<td collspan=\"3\" class=\"important\">"+
+		            "ACCURACY:<span class=\"accuracy\">"+ accuracy + "</span>"+
+		        "</td>"+
+		    "</tr>"+
+		    "<tr>"+
+		        "<td collspan=\"3\" class=\"important\">"+
+		            "PRECISION:<span class=\"accuracy\">"+ precision + "</span>"+
+		        "</td>"+
+		    "</tr>");
+
+	</script>
+</head>
+<body>
+	<table id="testregx" width="100%">
+    <tr class="header important">
+        <td>Address</td>
+        <td>Expected</td>
+        <td>Match</td>
+    </tr>
+</table>​
+</body>
+</html>
